@@ -1,20 +1,62 @@
 pipeline {
-   agent any
-   environment {
-       registry = "tanyawms/udccapstone"
-   }
-   stages {
-       stage('Build') {
-           steps {
-               // Create the node app 
-               sh 'run_docker.sh'
-           }    
-       }
-       stage('Publish') {
-           steps {
-               // Upload to Dockerhub 
-               sh 'upload_docker.sh'
-           } 
-       }
-   }
+	agent any
+	stages {
+
+        stage('Set current kubectl context') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+					sh '''
+						kubectl config use-context arn:aws:eks:us-east-2:121275816552:cluster/capstonecluster
+					'''
+				}
+			}
+		}
+
+		stage('Deploy blue container') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+					sh '''
+						kubectl apply -f ./blue-controller.json
+					'''
+				}
+			}
+		}
+
+		stage('Deploy green container') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+					sh '''
+						kubectl apply -f ./green-controller.json
+					'''
+				}
+			}
+		}
+
+		stage('Create the service in the cluster, redirect to blue') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+					sh '''
+						kubectl apply -f ./blue-service.json
+					'''
+				}
+			}
+		}
+
+		stage('Wait user approve') {
+            steps {
+                input "Ready to redirect traffic to green?"
+            }
+        }
+
+		stage('Create the service in the cluster, redirect to green') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+					sh '''
+						kubectl apply -f ./green-service.json
+					'''
+				}
+			}
+		}
+
+	}
 }
