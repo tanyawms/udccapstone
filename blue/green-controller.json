@@ -25,7 +25,7 @@
                   "image":"tanyastephens/udacity-capstone-green",
                   "ports":[
                      {
-                        "name":"nodejs-image-demo",
+                        "name":"green",
                         "containerPort":5000
                      }
                   ]
