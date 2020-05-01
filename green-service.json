@@ -11,7 +11,8 @@
       "ports": [
          {
            "port":5000,
-           "targetPort":80
+           "targetPort":5000,
+           "protocol": "TCP"
          }
       ],
       "selector":{
