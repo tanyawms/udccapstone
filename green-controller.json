@@ -26,7 +26,7 @@
                   "ports":[
                      {
                         "name":"green",
-                        "containerPort":80
+                        "containerPort":3000
                      }
                   ]
                }
