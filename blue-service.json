@@ -1,0 +1,22 @@
+{
+   "kind":"Service",
+   "apiVersion":"v1",
+   "metadata":{
+      "name":"bluegreenlb",
+      "labels":{
+         "app":"bluegreenlb"
+      }
+   },
+   "spec":{
+      "ports": [
+         {
+           "port":5000,
+           "targetPort":5000
+         }
+      ],
+      "selector":{
+         "app":"blue"
+      },
+      "type": "LoadBalancer"
+   }
+}

@@ -11,6 +11,6 @@ hadolint Dockerfile
 # Build image and add a descriptive tag
 docker build -f Dockerfile --tag=udacity-capstone-blue --label=udacity-capstone-blue .
 
-# Step 2:
+# Step 3:
 # List docker images
 docker image ls --filter label=udacity-capstone-blue
