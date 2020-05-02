@@ -17,6 +17,8 @@ pipeline {
             cd /home/node/app
             cp package*.json ./
         '''
+      }
+    }
     stage('Install dependencies') {
       steps {
         sh 'npm install'
