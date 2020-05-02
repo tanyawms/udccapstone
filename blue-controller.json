@@ -1,5 +1,5 @@
 {
-   "kind":"ReplicationController",
+   "kind":"Deployment",
    "apiVersion":"v1",
    "metadata":{
       "name":"blue",
