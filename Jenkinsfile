@@ -15,7 +15,7 @@ pipeline {
         sh '''
             mkdir -p /var/lib/jenkins/node/app/node_modules
             cd /var/lib/jenkins/node/app
-            cp package*.json ./
+            cp /var/lib/jenkins/workspace/create-node-app/package*.json ./
         '''
       }
     }
