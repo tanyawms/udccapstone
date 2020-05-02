@@ -1,6 +1,6 @@
 {
-   "kind":"Deployment",
-   "apiVersion":"app/v1",
+   "kind":"ReplicationController",
+   "apiVersion":"v1",
    "metadata":{
       "name":"blue",
       "labels":{
