@@ -30,7 +30,7 @@ pipeline {
     }
     stage('Test') {
       steps {
-         sh '/var/lib/jenkins/node/app/node_modules/.bin/mocha /var/lib/jenkins/node/app/test/test.js'
+         sh 'npm test'
       }
     }      
   }
