@@ -16,9 +16,9 @@ pipeline {
             mkdir -p /var/lib/jenkins/node/app/node_modules
             cp /var/lib/jenkins/workspace/create-node-app/blue/package*.json /var/lib/jenkins/node/app/
             mkdir -p /var/lib/jenkins/node/app/test
-            cp /var/lib/jenkins/workspace/create-node-app/blue/test /var/lib/jenkins/node/app/
+            cp -r /var/lib/jenkins/workspace/create-node-app/blue/test /var/lib/jenkins/node/app/
             mkdir -p /var/lib/jenkins/node/app/views
-            cp /var/lib/jenkins/workspace/create-node-app/blue/views /var/lib/jenkins/node/app/
+            cp -r /var/lib/jenkins/workspace/create-node-app/blue/views /var/lib/jenkins/node/app/
         '''
       }
     }
