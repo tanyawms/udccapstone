@@ -13,9 +13,8 @@ pipeline {
     stage('Create directories') {
       steps {
         sh '''
-            mkdir -p /var/lib/jenkins/node/app/node_modules
-            cd /var/lib/jenkins/node/app
-            cp /var/lib/jenkins/workspace/create-node-app/blue/package*.json ./
+            mkdir -p /var/lib/jenkins/node/app/blue/node_modules
+            cp /var/lib/jenkins/workspace/create-node-app/blue/package*.json /var/lib/jenkins/node/app/blue/
         '''
       }
     }

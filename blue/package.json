@@ -1,7 +1,7 @@
 {
-  "name": "nodejs-image-demo",
+  "name": "nodejs-app",
   "version": "1.0.0",
-  "description": "nodejs image demo",
+  "description": "nodejs app",
   "author": "Tanya Stephens <tanya@new.rr.com>",
   "license": "MIT",
   "main": "app.js",
