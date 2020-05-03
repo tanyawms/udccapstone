@@ -60,11 +60,10 @@ pipeline {
                         }
                 }
                 stage('Wait user approve') {
-                        steps {
-                                input "Ready to redirect traffic to green?" 
-                              }
-                        }
-                }
+            steps {
+                input "Ready to redirect traffic to green?"
+            }
+        }
                 stage('Deploy the service in the cluster, point to blue') {
                         steps {
                                 withAWS(region:'us-east-2', credentials:'capstone-credentials') {
