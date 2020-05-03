@@ -6,7 +6,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
 					sh '''
-						kubectl config use-context arn:aws:eks:us-east-2:121275816552:cluster/capcluster
+						kubectl config use-context arn:aws:eks:us-east-2:121275816552:cluster/capstonecluster
 					'''
 				}
 			}
@@ -16,7 +16,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
 					sh '''
-						kubectl apply -f ./blue-controller.json
+						kubectl apply -f ./blue-controller.yml
 					'''
 				}
 			}
@@ -26,21 +26,30 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
 					sh '''
-						kubectl apply -f ./green-controller.json
+						kubectl apply -f ./green-controller.yml
 					'''
 				}
 			}
 		}
 
-		stage('Create the service in the cluster, redirect to blue') {
+		stage('Create the blue service in the cluster') {
 			steps {
 				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
 					sh '''
-						kubectl apply -f ./blue-service.json
+						kubectl apply -f ./blue-service.yml
 					'''
 				}
 			}
 		}
+                stage('Deploy the service in the cluster, point to blue') {
+                        steps {
+                                withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+                                        sh '''
+                                                kubectl apply -f ./blue-deployment.yml
+                                        '''
+                                }
+                        }
+                }
 
 	}
 }
