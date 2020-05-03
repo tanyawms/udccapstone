@@ -64,7 +64,7 @@ pipeline {
                                 input "Ready to redirect traffic to green?" 
                               }
                 }
-                stage('Deploy the service in the cluster, point to blue') {
+                stage('Switch the service to green') {
                         steps {
                                 withAWS(region:'us-east-2', credentials:'capstone-credentials') {
                                         sh '''
