@@ -59,20 +59,6 @@ pipeline {
                                 }
                         }
                 }
-                stage('Wait user approve') {
-                        steps {
-                                input "Ready to redirect traffic to green?" 
-                              }
-                }
-                stage('Switch the service to green') {
-                        steps {
-                                withAWS(region:'us-east-2', credentials:'capstone-credentials') {
-                                        sh '''
-                                                kubectl apply -f ./green-service.yml
-                                        '''
-                                }
-                        }
-                }
 
 	}
 }
