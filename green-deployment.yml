@@ -1,25 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: green
-  app: green
+  name: green-deployment
   labels:
-    name: green
     app: green
 spec:
   replicas: 1 
   selector:
     matchLabels:
-      name: green
       app: green
   template:
     metadata:
       labels:
-        name: green
-        app: green
+        app: green 
     spec:
       containers:
-      - name: green
+      - name: green 
         image: tanyastephens/udacity-capstone-green
         ports:
         - containerPort: 3000
