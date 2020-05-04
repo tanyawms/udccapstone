@@ -1,21 +1,17 @@
-apiVersion: apps/v1
+apiVersion: extensions/v1
 kind: Deployment
 metadata:
-  name: green
-  labels:
-    app: green
+  name: nodeapp-green
 spec:
   replicas: 1 
-  selector:
-    matchLabels:
-      app: green
   template:
     metadata:
       labels:
-        app: green
+        name: nodeapp
+        version: "green"
     spec:
       containers:
-      - name: green
+      - name: nodeapp
         image: tanyastephens/udacity-capstone-green
         ports:
-        - containerPort: 3000
+        - containerPort: 3000      
