@@ -4,6 +4,10 @@ metadata:
   name: blue-deployment
 spec:
   replicas: 1 
+  selector:
+    matchLabels:
+      name: nodeapp
+      version: blue
   template:
     metadata:
       labels:
