@@ -35,7 +35,7 @@ pipeline {
                         steps {
                                 withAWS(region:'us-east-2', credentials:'capstone-credentials') {
                                         sh '''
-                                                kubectl apply -f ./blue-service.yml
+                                                kubectl apply -f ./bluegreen-service.yml
                                         '''
                                 }
                         }
