@@ -11,5 +11,5 @@ spec:
       targetPort: 3000
   selector: 
     name: nginx
-    version: "1.10"
+    version: "1.11"
   type: LoadBalancer
