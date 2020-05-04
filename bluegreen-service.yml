@@ -1,15 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodeapp
+  app: blue
   labels:
-    name: nodeapp
+    name: blue
 spec:
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
   selector:
-    name: nodeapp
-    version: blue
+    app: blue
   type: LoadBalancer 
