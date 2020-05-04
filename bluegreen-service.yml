@@ -3,10 +3,9 @@ kind: Service
 metadata:
   name: bluegreenlb
   labels:
-    name: bluegreenlb
+    app: green
 spec:
   selector:
-    name: bluegreenlb
     app: green
   ports:
     - protocol: TCP
