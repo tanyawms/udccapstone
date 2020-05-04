@@ -1,17 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: green-deployment
+  name: green
+  app: green
   labels:
+    name: green
     app: green
 spec:
   replicas: 1 
   selector:
     matchLabels:
+      name: green
       app: green
   template:
     metadata:
       labels:
+        name: green
         app: green
     spec:
       containers:
