@@ -1,14 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  app: blue
+  app: green
   labels:
-    name: blue
+    name: green
 spec:
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
   selector:
-    app: blue
+    app: green
   type: LoadBalancer 
