@@ -12,6 +12,25 @@ pipeline {
 			}
 		}
 
+		stage('Add blue container') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+					sh '''
+						kubectl apply -f ./blue-controller.yml
+					'''
+				}
+			}
+		}
+
+		stage('Add green container') {
+			steps {
+				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+					sh '''
+						kubectl apply -f ./green-controller.yml
+					'''
+				}
+			}
+		}
 
 		stage('Deploy the blue container in the cluster') {
 			steps {
