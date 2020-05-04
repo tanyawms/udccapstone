@@ -3,19 +3,22 @@ kind: Deployment
 metadata:
   name: green-deployment
   labels:
+    name: green-deployment
     app: green
 spec:
   replicas: 1 
   selector:
     matchLabels:
+      name: green-deployment
       app: green
   template:
     metadata:
       labels:
-        app: green 
+        name: green-deployment
+        app: green
     spec:
       containers:
-      - name: green 
+      - name: green
         image: tanyastephens/udacity-capstone-green
         ports:
         - containerPort: 3000
