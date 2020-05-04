@@ -2,20 +2,16 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: blue-deployment
-  labels:
-    app: blue
 spec:
   replicas: 1 
-  selector:
-    matchLabels:
-      app: blue
   template:
     metadata:
       labels:
-        app: blue
+        name: nodeapp
+        version: blue
     spec:
       containers:
-      - name: blue
+      - name: nodeapp
         image: tanyastephens/udacity-capstone-blue
         ports:
         - containerPort: 3000
