@@ -1,18 +1,21 @@
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nodeapp-blue
+  name: blue-deployment
+  labels:
+    app: blue
 spec:
   replicas: 1 
   selector:
+    matchLabels:
+      app: blue
   template:
     metadata:
       labels:
-        name: nodeapp
-        version: "blue"
+        app: blue
     spec:
       containers:
-      - name: nodeapp
+      - name: blue
         image: tanyastephens/udacity-capstone-blue
         ports:
-        - containerPort: 3000      
+        - containerPort: 3000

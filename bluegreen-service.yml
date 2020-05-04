@@ -1,13 +1,13 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: nodeapp
+  name: green-deployment
   labels:
-    name: nodeapp
+    app: green
 spec:
   selector:
-    name: nodeapp
-    version: "green"
+    name: green-deployment
+    app: green
   ports:
     - protocol: TCP
       port: 3000
