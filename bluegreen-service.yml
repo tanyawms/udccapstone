@@ -5,11 +5,11 @@ metadata:
   labels:
     name: nodeapp
 spec:
-  selector:
-    name: nodeapp
-    version: blue
   ports:
     - protocol: TCP
       port: 3000
       targetPort: 3000
+  selector:
+    name: nodeapp
+    version: blue
   type: LoadBalancer 
