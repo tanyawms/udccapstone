@@ -16,7 +16,7 @@ pipeline {
 			steps {
 				withAWS(region:'us-east-2', credentials:'capstone-credentials') {
 					sh '''
-						kubectl apply -f ./blue-deployment.yml
+						kubectl apply -f ./blue.yaml
 					'''
 				}
 			}
@@ -25,7 +25,7 @@ pipeline {
                         steps {
                                 withAWS(region:'us-east-2', credentials:'capstone-credentials') {
                                         sh '''
-                                                kubectl apply -f ./green-deployment.yml
+                                                kubectl apply -f ./green.yaml
                                         '''
                                 }
                         }
@@ -34,7 +34,7 @@ pipeline {
                         steps {
                                 withAWS(region:'us-east-2', credentials:'capstone-credentials') {
                                         sh '''
-                                                kubectl apply -f ./bluegreen-service.yml
+                                                kubectl apply -f ./service.yaml
                                         '''
                                 }
                         }
