@@ -1,17 +1,17 @@
 apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
-  name: nginx-1.10
+  name: nodeapp-blue
 spec:
   replicas: 1
   template:
     metadata:
       labels:
-        name: nginx
-        version: "1.10"
+        name: nodeapp
+        version: "blue"
     spec:
       containers: 
-        - name: nginx
+        - name: nodeapp
           image: tanyastephens/udacity-capstone-blue
           ports:
             - name: http
