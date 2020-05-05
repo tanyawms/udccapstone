@@ -8,7 +8,7 @@ spec:
     metadata:
       labels:
         name: nodeapp
-        version: blue
+        version: "blue"
     spec:
       containers: 
         - name: nodeapp
