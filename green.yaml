@@ -8,7 +8,7 @@ spec:
     metadata:
       labels:
         name: nodeapp
-        version: "green"
+        version: green
     spec:
       containers: 
         - name: nodeapp
