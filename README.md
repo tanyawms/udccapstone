@@ -32,6 +32,59 @@ Select Manage Jenkins -->Manage Plugins to add plugins. Click the Available tab 
 
 
 STEP TWO: DOCKERIZE AN APPLICATION
+A nodejs application that consists of a couple of webpages is used for this assignment. The nodejs application also uses the Bootstrap library for common components. There are two versions of the application, one with a blue background and the other with a green background, making it easy to identify the deployments. The nodejs application is converted to a Docker image based on a Dockerfile. The Dockerfile is checked for errors (linted). The Dockerfile contents are explained below.
+
+     FROM node:10-alpine - Pull the image from the Docker repository
+
+     RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app - Make a directory and change ownership
+
+     WORKDIR /home/node/app - Change to the main directory
+
+     COPY package*.json ./ - Use a wildcard to copy both the package.json and the package-lock.json files
+
+     USER node - Set the user
+
+     RUN npm install - Install the app and dependencies
+
+     COPY --chown=node:node . . - Copy the files and change ownership
+
+     EXPOSE 3000 - Expose the port for the application
+
+     CMD [ "node", "app.js" ] - Start the application
+
+
+The command to execute the Dockerfile is:
+docker build -f Dockerfile --tag=<filename> --label=<filename> .
+
+However, a script is used to include a step to lint the file. The run_docker.sh script is shown below:
+
+     #!/usr/bin/env bash
+
+     ## Complete the following steps to get Docker running locally
+
+     # Step 1:
+     # Lint the Dockerfile
+     # This is linter for Dockerfiles
+     hadolint Dockerfile
+
+     # Step 2:
+     # Build image and add a descriptive tag
+     docker build -f Dockerfile --tag=<filename> --label=<filename> .
+
+     # Step 3:
+     # List docker images
+     docker image ls --filter label=<filename> 
+
+Hadolint is used to check the Dockerfile for errors. If an error is found, the output is like:
+
+
+The output of a file without errors is like:
+
+
+After the Docker image is built, another script (upload_docker.sh) is used to upload the image to Dockerhub.
+
+The above procedures are executed twice, once for the blue application and again for the green application.
+
 
 
 
