@@ -60,7 +60,8 @@ A nodejs application that consists of a couple of webpages is used for this assi
 
 
 The command to execute the Dockerfile is:
-docker build -f Dockerfile --tag=<filename> --label=<filename> .
+
+    docker build -f Dockerfile --tag=<filename> --label=<filename> .
 
 However, a script is used to include a step to lint the file. The run_docker.sh script is shown below:
 
