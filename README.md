@@ -4,7 +4,7 @@ This capstone project uses NodeJS, Docker, Jenkins, AWS EKS, and shell scripts t
 
 ## STEP ONE: BUILD A JENKINS INSTANCE ##
 
-The Jenkins instance is built from an AWS CloudFormation template. The template file is located at [ buildjenkins/buildjenkins.yaml ]( ./buildjenkins/buildjenkins.yaml ). The template includes network components (VPC, Subnet, Internet Gateway, Elastic IP, Route Table), IAM components (Role, Security Group), and EC2 instance information (instance type, image id, volume size and type). The UserData section is used to add Jenkins as well as other packages to the EC2 instance. The packages include (java, jq, zip, hadolint, AWS CLI, eksctl, kubectl)
+The Jenkins instance is built from an AWS CloudFormation template. The template file is located at [ buildjenkins/buildjenkins.yaml ]( buildjenkins/buildjenkins.yaml ). The template includes network components (VPC, Subnet, Internet Gateway, Elastic IP, Route Table), IAM components (Role, Security Group), and EC2 instance information (instance type, image id, volume size and type). The UserData section is used to add Jenkins as well as other packages to the EC2 instance. The packages include (java, jq, zip, hadolint, AWS CLI, eksctl, kubectl)
 
 The command to run the template is:
 
@@ -39,7 +39,7 @@ Select Manage Jenkins -->Manage Plugins to add plugins. Click the Available tab 
 
 ## STEP TWO: DOCKERIZE AN APPLICATION ##
 
-A nodejs application that consists of a couple of webpages is used for this assignment. The nodejs application also uses the Bootstrap library for common components. There are two versions of the application, one with a blue background and the other with a green background, making it easy to identify the deployments. The nodejs application is converted to a Docker image based on a Dockerfile. The Dockerfile is checked for errors (linted). The [ Dockerfile ]( ./blue/Dockerfile ) contents are explained below.
+A nodejs application that consists of a couple of webpages is used for this assignment. The nodejs application also uses the Bootstrap library for common components. There are two versions of the application, one with a blue background and the other with a green background, making it easy to identify the deployments. The nodejs application is converted to a Docker image based on a Dockerfile. The Dockerfile is checked for errors (linted). The [ Dockerfile ]( blue/Dockerfile ) contents are explained below.
 
      FROM node:10-alpine - Pull the image from the Docker repository
 
@@ -64,7 +64,7 @@ The command to execute the Dockerfile is:
 
     docker build -f Dockerfile --tag=<filename> --label=<filename> .
 
-However, a script is used to include a step to lint the file. The [ run_docker.sh ]( ./blue/run_docker.sh ) script is shown below:
+However, a script is used to include a step to lint the file. The [ run_docker.sh ]( blue/run_docker.sh ) script is shown below:
 
      #!/usr/bin/env bash
 
@@ -92,7 +92,7 @@ The output of a file without errors is like:
 ![Hadolint success](./ss_images/hadolint_success.png "")
 
 
-After the Docker image is built, another script ([ upload_docker.sh ]( ./blue/upload_docker.sh )) is used to upload the image to Dockerhub.
+After the Docker image is built, another script ([ upload_docker.sh ]( blue/upload_docker.sh )) is used to upload the image to Dockerhub.
 
 The above procedures are executed twice, once for the blue application and again for the green application.
 
