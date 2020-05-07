@@ -206,23 +206,23 @@ The external address for the active deployment can be obtained via the kubectl c
 
      2. Switch to the jenkins user 
 
-        sudo su jenkins
+        sudo su - jenkins
 
      3. Run the kubectl command
 
         kubectl get services
 
         The output is like:
-
-        ![External IP](ss_images/get_services.png "")
-
+        
+   ![External IP](ss_images/get_services.png "")
+       
      4. Open the URL in a browser at port 3000, for example:
 
         http://a181fdb5f28c64983a6adccd7fc469fe-1206897256.us-east-2.elb.amazonaws.com:3000/
 
      5. The blue deployment is active
 
-        ![Blue Deployment](ss_images/blue_deploy.png "")
+   ![Blue Deployment](ss_images/blue_deploy.png "")
 
 ## STEP SEVEN: SWITCH ACTIVE DEPLOYMENT ##
 
@@ -256,7 +256,7 @@ The deployment can be switched by making changes to the service.yaml file and us
 
      4. The green deployment is active
 
-        ![Green Deployment](ss_images/green_deploy.png "")
+   ![Green Deployment](ss_images/green_deploy.png "")
 
 A script at ~/workspace/<project name>/bg_deploy.sh can be used to automate the switch.  The syntax for the command is bg-deploy.sh <servicename> <version> <deployment.yaml> For example:
 
