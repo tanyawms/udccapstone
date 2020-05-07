@@ -99,4 +99,4 @@ The above procedures are executed twice, once for the blue application and again
 
 
 
-STEP FOUR: BLUE/GREEN DEPLOYMENTS
+## STEP FIVE: BLUE/GREEN DEPLOYMENTS ##
