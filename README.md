@@ -1,18 +1,23 @@
+# Capstone Project #
+
 This capstone project uses NodeJS, Docker, Jenkins, AWS EKS, and shell scripts to create a blue/green deployment pipeline.
 
-STEP ONE: BUILD A JENKINS INSTANCE
+## STEP ONE: BUILD A JENKINS INSTANCE ##
 
 The Jenkins instance is built from an AWS CloudFormation template. The template file is located at buildjenkins/buildjenkins.yaml. The template includes network components (VPC, Subnet, Internet Gateway, Elastic IP, Route Table), IAM components (Role, Security Group), and EC2 instance information (instance type, image id, volume size and type). The UserData section is used to add Jenkins as well as other packages to the EC2 instance. The packages include (java, jq, zip, hadolint, AWS CLI, eksctl, kubectl)
 
 The command to run the template is:
-aws cloudformation create-stack --stack-name <stackname> --template-body file:buildjenkins.yaml --capabilities CAPABILITY_NAMED_IAM
+
+     aws cloudformation create-stack --stack-name <stackname> --template-body file:buildjenkins.yaml --capabilities CAPABILITY_NAMED_IAM
 
 After the ec2 instance is built, the IP address can be obtained from the console. The link for the Jenkins instance is:
-http://<IP ADDRESS>:8080
+
+     http://<IP ADDRESS>:8080
 
 On first login a screen appears with the location of the Jenkins admin password. Use SSH to login to the server from a terminal window. The password can be obtained by using more,less, or cat to list the file contents. For example:
-sudo more /var/lib/jenkins/secrets/initialAdminPassword
-a620dl28eff14892b1ad9dc2b3ceaab2
+     
+     sudo more /var/lib/jenkins/secrets/initialAdminPassword
+     a620dl28eff14892b1ad9dc2b3ceaab2
 
 Use the password to login and create a separate admin account with a separate username and password.
 
@@ -31,7 +36,8 @@ Select Manage Jenkins -->Manage Plugins to add plugins. Click the Available tab 
     SSH Credentials - Allows Jenkins to be accessed via ssh
 
 
-STEP TWO: DOCKERIZE AN APPLICATION
+## STEP TWO: DOCKERIZE AN APPLICATION ##
+
 A nodejs application that consists of a couple of webpages is used for this assignment. The nodejs application also uses the Bootstrap library for common components. There are two versions of the application, one with a blue background and the other with a green background, making it easy to identify the deployments. The nodejs application is converted to a Docker image based on a Dockerfile. The Dockerfile is checked for errors (linted). The Dockerfile contents are explained below.
 
      FROM node:10-alpine - Pull the image from the Docker repository
@@ -86,10 +92,10 @@ After the Docker image is built, another script (upload_docker.sh) is used to up
 The above procedures are executed twice, once for the blue application and again for the green application.
 
 
+## STEP THREE: ADD TO GITHUB REPOSITORY ##
 
 
-
-STEP THREE: BUILD A KUBERNETES CLUSTER
+## STEP FOUR: BUILD A KUBERNETES CLUSTER ##
 
 
 
