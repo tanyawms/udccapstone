@@ -85,11 +85,11 @@ However, a script is used to include a step to lint the file. The [ run_docker.s
 
 Hadolint is used to check the Dockerfile for errors. If an error is found, the output is like:
 
-![Hadolint failure](./ss_images/hadolint_fail.png "")
+![Hadolint failure](ss_images/hadolint_fail.png "")
 
 The output of a file without errors is like:
 
-![Hadolint success](./ss_images/hadolint_success.png "")
+![Hadolint success](ss_images/hadolint_success.png "")
 
 
 After the Docker image is built, another script ([ upload_docker.sh ]( blue/upload_docker.sh )) is used to upload the image to Dockerhub.
@@ -99,9 +99,165 @@ The above procedures are executed twice, once for the blue application and again
 
 ## STEP THREE: ADD TO GITHUB REPOSITORY ##
 
+A Githib repository is needed to proceed to the next step. Create a new GitHub repository and add the files created in the previous steps. The repository will be connected to the Jenkins pipeline jobs. If a change is committed to the Github repository, the Jenkins pipeline can be set to update automatically.
+
 
 ## STEP FOUR: BUILD A KUBERNETES CLUSTER ##
 
+The next step is to build a Kubernetes cluster for the applications using the Amazon Web Services (AWS) Elastic Kubernetes Service (EKS). EKS is a managed service to simplify building and managing Kubernetes on the AWS platform. In order to use Jenkins to create a pipeline to build the EKS cluster, AWS and Github credentials are added to the global configuration. The following Jenkinsfile is used to build the cluster with 2 nodes.
+
+      pipeline {
+        agent any
+        stages {
+
+                stage('Create kubernetes cluster') {
+                        steps {
+                                withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+                                        sh '''
+                                                eksctl create cluster \
+                                                --name capstone \
+                                                --version 1.15 \
+                                                --nodegroup-name standard-workers \
+                                                --node-type t2.micro \
+                                                --nodes 2 \
+                                                --nodes-min 1 \
+                                                --nodes-max 3 \
+                                                --node-ami auto \
+                                                --region us-east-2 \
+                                                --zones us-east-2a \
+                                                --zones us-east-2b \
+                                                --zones us-east-2c \
+                                        '''
+                                }
+                        }
+                }
+
+
+
+                stage('Create conf file cluster') {
+                        steps {
+                                withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+                                        sh '''
+                                                aws eks --region us-east-2 update-kubeconfig --name capstone
+                                        '''
+                                }
+                        }
+                }
+
+After the pipeline has executed successfully, disable the pipeline so it doesn't attempt to execute when changes to the Github repo are made.
 
 
 ## STEP FIVE: BLUE/GREEN DEPLOYMENTS ##
+
+Once the cluster is built, the applications inside the Docker container are ready to be deployed. A Jenkinsfile moves the blue and green containers to EKS and makes the blue application active via a service. The contents of the Jenkinsfile are:
+
+     pipeline {
+        agent any
+        stages {
+
+        stage('Set current kubectl context') {
+                        steps {
+                                withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+                                        sh '''
+                                                kubectl config use-context arn:aws:eks:us-east-2:1212758xxxxx:cluster/capstone
+                                        '''
+                                }
+                        }
+                }
+
+                stage('Deploy the blue container in the cluster') {
+                        steps {
+                                withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+                                        sh '''
+                                                kubectl apply -f ./blue.yaml
+                                        '''
+                                }
+                        }
+                }
+                stage('Deploy the green container in the cluster') {
+                        steps {
+                                withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+                                        sh '''
+                                                kubectl apply -f ./green.yaml
+                                        '''
+                                }
+                        }
+                }
+                stage('Deploy the service in the cluster, point to blue') {
+                        steps {
+                                withAWS(region:'us-east-2', credentials:'capstone-credentials') {
+                                        sh '''
+                                                kubectl apply -f ./service.yaml
+                                        '''
+                                }
+                        }
+                }
+
+        }
+     }  
+
+## STEP SIX: VIEW ACTIVE DEPLOYMENT ##
+
+The external address for the active deployment can be obtained via the kubectl command. 
+     
+     1. Login via ssh to the Jenkins server as user ubuntu
+
+        ssh ubuntu@xxx.xxx.xxx.xxx
+
+     2. Switch to the jenkins user 
+
+        sudo su jenkins
+
+     3. Run the kubectl command
+
+        kubectl get services
+
+        The output is like:
+
+        ![External IP](ss_images/get_services.png "")
+
+     4. Open the URL in a browser at port 3000, for example:
+
+        http://a181fdb5f28c64983a6adccd7fc469fe-1206897256.us-east-2.elb.amazonaws.com:3000/
+
+     5. The blue deployment is active
+
+        ![Blue Deployment](ss_images/blue_deploy.png "")
+
+## STEP SEVEN: SWITCH ACTIVE DEPLOYMENT ##
+
+The deployment can be switched by making changes to the service.yaml file and using the kubectl command.
+
+     1. Edit the file at ~/workspace/<project name>/service.yaml file and change the version reference from blue to green
+
+        apiVersion: v1
+        kind: Service
+        metadata:
+        name: nodeapp
+        labels:
+          name: nodeapp
+        spec:
+        ports:
+          - name: http
+            port: 3000
+            targetPort: 3000
+        selector:
+          name: nodeapp
+          version: "blue"  ## switch to green ##
+        type: LoadBalancer
+
+     2. Run the kubectl command
+
+        kubectl apply -f service.yaml
+
+     3. Open or refresh the URL in a browser at port 3000, for example:
+
+        http://a181fdb5f28c64983a6adccd7fc469fe-1206897256.us-east-2.elb.amazonaws.com:3000/
+
+     4. The green deployment is active
+
+        ![Green Deployment](ss_images/green_deploy.png "")
+
+A script at ~/workspace/<project name>/bg_deploy.sh can be used to automate the switch.  The syntax for the command is bg-deploy.sh <servicename> <version> <deployment.yaml> For example:
+
+     bg-deploy.sh nodeapp blue service.yaml
