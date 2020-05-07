@@ -26,14 +26,15 @@ Next install the suggested plugins. After Jenkins restarts, login with the usern
 Select Manage Jenkins -->Manage Plugins to add plugins. Click the Available tab and use the Filter field to search for and install the plugins listed below.
 
  The Jenkins plugins used are: 
-    Green Balls - Successful builds appear as green balls instead of the default blue.
-    Blue Ocean - A set of plugins to simplify Jenkins pipelines
-    CloudBees AWS Credentials Plugin - Connects Jenkins with AWS credentials
-    CloudBees Docker Build and Publish plugin - Connects Jenkins with Docker/Dockerhub
-    Github - Connects Jenkins with Github
-    Pipeline - A suite of plugins to help build and automate pipelines
-    Pipeline: AWS Steps - Integrates Jenkins pipelines with AWS
-    SSH Credentials - Allows Jenkins to be accessed via ssh
+ 
+    * Green Balls - Successful builds appear as green balls instead of the default blue.
+    * Blue Ocean - A set of plugins to simplify Jenkins pipelines
+    * CloudBees AWS Credentials Plugin - Connects Jenkins with AWS credentials
+    * CloudBees Docker Build and Publish plugin - Connects Jenkins with Docker/Dockerhub
+    * Github - Connects Jenkins with Github
+    * Pipeline - A suite of plugins to help build and automate pipelines
+    * Pipeline: AWS Steps - Integrates Jenkins pipelines with AWS
+    * SSH Credentials - Allows Jenkins to be accessed via ssh
 
 
 ## STEP TWO: DOCKERIZE AN APPLICATION ##
